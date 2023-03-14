@@ -6,13 +6,15 @@ import time
 
 def measure_temp():
     temp = os.popen("vcgencmd measure_temp").readline()
+    temp.replace("temp=", "")
+    temp.replace("'C", "")
     return (temp.replace("temp=", ""))
 
 
 def measure_freq():
     freq = os.popen('vcgencmd measure_clock arm').readline()
     freq = freq.replace("frequency(48)=", "")
-    freq = int(freq)
+    freq = int(freq)/10000
     return (freq)
 
 
