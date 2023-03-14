@@ -7,8 +7,9 @@ import time
 def measure_temp():
     temp = os.popen("vcgencmd measure_temp").readline()
     temp.replace("temp=", "")
+    temp.replace("\n", "")
     temp.replace("'C", "")
-    return (temp.replace("temp=", ""))
+    return (temp)
 
 
 def measure_arm():
