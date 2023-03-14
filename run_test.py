@@ -1,5 +1,3 @@
-
-
 import os
 import time
 #import board
@@ -37,5 +35,11 @@ timenow = 0
 while True:
     # timestamp, core temp, # arm freq, # sensor temp, # sensor hum
     #print(timestamp(), measure_temp(), measure_freq(), am.temperature, am.relative_humdiity)
-    print(timestamp(), measure_temp(), measure_freq())
+    #print(timestamp(), measure_temp(), measure_freq())
+
+    measurements = f'{timestamp()}, {measure_temp()}, {measure_freq()}'
+
+    with open('readings.txt', "a") as file:
+        file.write(measurements + "\n")
+
     time.sleep(1)
