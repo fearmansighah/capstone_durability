@@ -44,6 +44,7 @@ while True:
     #print(timestamp(), measure_temp(), measure_freq())
 
     measurements = f'{timenow}, {measure_temp()}, {measure_core()}, {measure_arm()}'
+    print(measurements, '\n')
 
     with open('readings.txt', "a") as file:
         file.write(measurements + "\n")
