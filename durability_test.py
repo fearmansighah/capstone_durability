@@ -11,9 +11,16 @@ def measure_temp():
     return (temp.replace("temp=", ""))
 
 
-def measure_freq():
+def measure_arm():
     freq = os.popen('vcgencmd measure_clock arm').readline()
     freq = freq.replace("frequency(48)=", "")
+    freq = int(freq)/10000
+    return (freq)
+
+
+def measure_core():
+    freq = os.popen('vcgencmd measure_clock core').readline()
+    freq = freq.replace("frequency(1)=", "")
     freq = int(freq)/10000
     return (freq)
 
@@ -35,7 +42,7 @@ while True:
     #print(timestamp(), measure_temp(), measure_freq(), am.temperature, am.relative_humdiity)
     #print(timestamp(), measure_temp(), measure_freq())
 
-    measurements = f'{timenow}, {measure_temp()}, {measure_freq()}'
+    measurements = f'{timenow}, {measure_temp()}, {measure_core()}, {measure_arm()}'
 
     with open('readings.txt', "a") as file:
         file.write(measurements + "\n")
