@@ -16,10 +16,6 @@ def measure_freq():
     return (freq)
 
 
-def timestamp():
-    timenow += 1
-    return timenow
-
 # create venv
 # python3 -m venv venv
 # source .venv/bin/activate
@@ -37,9 +33,10 @@ while True:
     #print(timestamp(), measure_temp(), measure_freq(), am.temperature, am.relative_humdiity)
     #print(timestamp(), measure_temp(), measure_freq())
 
-    measurements = f'{timestamp()}, {measure_temp()}, {measure_freq()}'
+    measurements = f'{timenow}, {measure_temp()}, {measure_freq()}'
 
     with open('readings.txt', "a") as file:
         file.write(measurements + "\n")
 
     time.sleep(1)
+    timenow += 1
