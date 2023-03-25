@@ -1,7 +1,10 @@
 import os
 import time
-#import board
-#import adafruit_am2320
+import board
+import adafruit_am2320
+import paho.mqtt.client as mqtt
+
+# to run: sudo python3 duability_test.py
 
 
 def measure_temp():
@@ -26,28 +29,28 @@ def measure_core():
     return (freq)
 
 
-# create venv
-# python3 -m venv venv
-# source .venv/bin/activate
-# (sudo) pip3 install adafruit-circuitpython-am2320
-
-
 # create the I2C shared bus
-# i2c = board.I2C()  # uses board.SCL and board.SDA
-# i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
-#am = adafruit_am2320.AM2320(i2c)
+i2c = board.I2C()  # uses board.SCL and board.SDA
+am = adafruit_am2320.AM2320(i2c)
 timenow = 0
+mqttBroker = "mqtt.eclipseprojects.io"
+mqttClient = mqtt.Client("crwn_pi")
+topic = 'durability_test'
 
 while True:
     # timestamp, core temp, # arm freq, # sensor temp, # sensor hum
-    #print(timestamp(), measure_temp(), measure_freq(), am.temperature, am.relative_humdiity)
-    #print(timestamp(), measure_temp(), measure_freq())
+    #pr(timestamp(), measure_temp(), measure_freq(), am.temperature, am.relative_humdiity)
+    measurements = f'{timenow}, {measure_temp()}, {measure_core()}, {measure_arm()}, {am.temperature}, {am.relative_humidity}'
 
     measurements = f'{timenow}, {measure_temp()}, {measure_core()}, {measure_arm()}'
     print(measurements, '\n')
 
     with open('readings.txt', "a") as file:
         file.write(measurements + "\n")
+
+    mqttClient.connect(mqttBroker)
+
+    mqttClient.publish(topic, measurements)
 
     time.sleep(1)
     timenow += 1
